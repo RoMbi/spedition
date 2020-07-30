@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row">
+                <h1>Nowy przewoźnik</h1>
+            </div>
+        </div>
+        {{ form_start(form) }}
+        <div class="table">
+            <div class="form-group">
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name) }}
+                {{ form_errors(form.name) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.person) }}
+                {{ form_widget(form.person) }}
+                {{ form_errors(form.person) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.identifier) }}
+                {{ form_widget(form.identifier) }}
+                {{ form_errors(form.identifier) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.base) }}
+                {{ form_widget(form.base) }}
+                {{ form_errors(form.base) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.email) }}
+                {{ form_widget(form.email) }}
+                {{ form_errors(form.email) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.phone) }}
+                {{ form_widget(form.phone) }}
+                {{ form_errors(form.phone) }}
+            </div>
+            <hr />
+            <div class="cars form-group">
+                {{ form_label(form.cars) }}
+                <legend class="col-form-legend">Samochody</legend>
+                <div class="form-row car-add"
+                     data-prototype="{{ form_widget(form.cars.vars.prototype)|e('html_attr') }}"></div>
+            </div>
+            <hr />
+            <div class="relations form-group">
+                {{ form_label(form.relations) }}
+                <legend class="col-form-legend">Relacje</legend>
+                <div class="form-row relation-add"
+                     data-prototype="{{ form_widget(form.relations.vars.prototype)|e('html_attr') }}"></div>
+            </div>
+            <hr />
+            <div class="form-group">
+                {{ form_label(form.clauses) }}
+                {{ form_widget(form.clauses) }}
+                {{ form_errors(form.clauses) }}
+            </div>
+        </div>
+        <hr />
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+{% block head %}
+{% endblock %}
+
+{% block body %}
+    <table class="table table-filter">
+        <thead>
+        <tr>
+            <th>Nazwa</th>
+            <th>Osoba</th>
+            <th>ID</th>
+            <th>Baza</th>
+            <th>Email</th>
+            <th>Akcje</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for carrier in carriers %}
+            <tr>
+                <td><a href="{{ path('carrier_show', { 'id': carrier.id }) }}">{{ carrier.name }}</a></td>
+                <td>{{ carrier.person }}</td>
+                <td>{{ carrier.identifier }}</td>
+                <td>{{ carrier.base }}</td>
+                <td>
+                    <a href="mailto:{{ carrier.email }}">
+                        {{ carrier.email }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('carrier_show', { 'id': carrier.id }) }}" title="Podgląd"><i class="fa fa-eye"></i></a>
+                    <a href="{{ path('carrier_edit', { 'id': carrier.id }) }}" title="Edycja"><i class="fa fa-pencil-square-o"></i></a>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('carrier_new') }}" class="btn btn-success btn-block btn-flat">Dodaj przewoźnika</a>
+{% endblock %}

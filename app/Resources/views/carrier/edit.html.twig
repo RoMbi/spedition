@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <h1>Edycja przewoźnika</h1>
+
+    {{ form_start(edit_form) }}
+    <div class="form-group">
+        {{ form_label(edit_form.name) }}
+        {{ form_widget(edit_form.name) }}
+        {{ form_errors(edit_form.name) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(edit_form.person) }}
+        {{ form_widget(edit_form.person) }}
+        {{ form_errors(edit_form.person) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(edit_form.identifier) }}
+        {{ form_widget(edit_form.identifier) }}
+        {{ form_errors(edit_form.identifier) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(edit_form.base) }}
+        {{ form_widget(edit_form.base) }}
+        {{ form_errors(edit_form.base) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(edit_form.email) }}
+        {{ form_widget(edit_form.email) }}
+        {{ form_errors(edit_form.email) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(edit_form.phone) }}
+        {{ form_widget(edit_form.phone) }}
+        {{ form_errors(edit_form.phone) }}
+    </div>
+    <div class="cars form-group">
+        {{ form_label(edit_form.cars) }}
+        <legend class="col-form-legend">Samochody</legend>
+        {% for car in edit_form.cars %}
+            <div class="form-row new-car cars-collection">
+                {{ form_widget(car) }}
+            </div>
+        {% endfor %}
+        <div class="form-row car-add"
+             data-prototype="{{ form_widget(edit_form.cars.vars.prototype)|e('html_attr') }}"></div>
+    </div>
+    <hr />
+    <div class="relations form-group">
+        {{ form_label(edit_form.relations) }}
+        <legend class="col-form-legend">Relacje</legend>
+        {% for relation in edit_form.relations %}
+            <div class="form-row new-relation relations-collection">
+                {{ form_widget(relation) }}
+            </div>
+        {% endfor %}
+        <div class="form-row relation-add"
+             data-prototype="{{ form_widget(edit_form.relations.vars.prototype)|e('html_attr') }}"></div>
+    </div>
+    <hr />
+    <div class="form-group">
+        {{ form_label(edit_form.clauses) }}
+        {{ form_widget(edit_form.clauses) }}
+        {{ form_errors(edit_form.clauses) }}
+    </div>
+    <hr />
+    <br/>
+    <div class="form-group">
+        {{ form_end(edit_form) }}
+        {{ form_start(delete_form) }}
+            <input type="submit" value="Usuń przewoźnika" class="form-row btn btn-danger btn-block btn-flat">
+        {{ form_end(delete_form) }}
+    </div>
+    <a class="form-row btn btn-block btn-flat btn-secondary" href="{{ path('carrier_show', { 'id': carrier.id }) }}">Przejdź do podglądu</a>
+{% endblock %}

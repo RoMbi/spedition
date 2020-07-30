@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row">
+                <h1>Szukaj</h1>
+            </div>
+        </div>
+        <div class="table">
+            {{ form_start(form) }}
+            <div class="row">
+                <div class="form-group col-sm-12">
+                    {{ form_label(form.base) }}
+                    {{ form_widget(form.base) }}
+                    {{ form_errors(form.base) }}
+                </div>
+            </div>
+            <div class="row new-relation">
+                <div class="form-group col-sm-6">
+                    {{ form_label(form.fromLocation) }}
+                    {{ form_widget(form.fromLocation) }}
+                    {{ form_errors(form.fromLocation) }}
+                </div>
+                <div class="form-group col-sm-6">
+                    {{ form_label(form.destinations) }}
+                    {{ form_widget(form.destinations) }}
+                    {{ form_errors(form.destinations) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-3">
+                    {{ form_label(form.type) }}
+                    {{ form_widget(form.type) }}
+                    {{ form_errors(form.type) }}
+                </div>
+                <div class="form-group col-sm-3">
+                    {{ form_label(form.build) }}
+                    {{ form_widget(form.build) }}
+                    {{ form_errors(form.build) }}
+                </div>
+                <div class="form-group col-sm-3 new-car">
+                    {{ form_label(form.equipments) }}
+                    {{ form_widget(form.equipments) }}
+                    {{ form_errors(form.equipments) }}
+                </div>
+                <div class="form-group col-sm-3">
+                    {{ form_label(form.quantity) }}
+                    {{ form_widget(form.quantity) }}
+                    {{ form_errors(form.quantity) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    {{ form_label(form.paletteCapacityFrom) }}
+                    {{ form_widget(form.paletteCapacityFrom) }}
+                    {{ form_errors(form.paletteCapacityFrom) }}
+                </div>
+                <div class="form-group col-sm-6">
+                    {{ form_label(form.paletteCapacityTo) }}
+                    {{ form_widget(form.paletteCapacityTo) }}
+                    {{ form_errors(form.paletteCapacityTo) }}
+                </div>
+            </div>
+            {{ form(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+    {% if results %}
+        <hr>
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <h1>Wyniki</h1>
+                </div>
+            </div>
+            <div class="table">
+                <table class="table table-filter">
+                    <thead>
+                    <tr>
+                        <th>Nazwa</th>
+                        <th>Baza</th>
+                        <th>Osoba / ID</th>
+                        <th>Email</th>
+                        <th>Relacje</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% set emails = [] %}
+                    {% for carrier in results %}
+                        <tr>
+                            <td><a href="{{ path('carrier_show', { 'id': carrier.id }) }}">{{ carrier.name }}</a></td>
+                            <td>{{ carrier.base }}</td>
+                            <td>{{ carrier.person }} / {{ carrier.identifier }}</td>
+                            <td>
+                                <a href="mailto:{{ carrier.email }}">
+                                    {{ carrier.email }}
+                                    {% set emails = emails|merge([carrier.email]) %}
+                                </a>
+                            </td>
+                            {% set relationString = "" %}
+                            {% for relation in carrier.relations %}
+                                {% set relationString = relationString ~ "<b>" ~ relation.fromLocation.code ~ "</b> -> " %}
+                                {% set destinations = [] %}
+                                {% for destination in relation.destinations %}
+                                    {% set destinations = destinations|merge([destination.code]) %}
+                                {% endfor %}
+                                {% set relationString = relationString ~ destinations|join(' / ') ~ "<br />" %}
+                            {% endfor %}
+                            <td>{{ relationString|raw }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <a href='mailto:?bcc={{ emails|join(';') }}' class="btn btn-primary btn-block btn-flat">E-mail do wyników</a>
+            </div>
+        </div>
+        <hr>
+    {% elseif anyResult is not null and anyResult == false %}
+        <hr>
+        Brak wyników...
+        <hr>
+    {% endif %}
+{% endblock %}

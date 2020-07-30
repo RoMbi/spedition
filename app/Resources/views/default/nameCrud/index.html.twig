@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+{% block head %}
+{% endblock %}
+
+{% block body %}
+    <table class="table table-filter">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nazwa</th>
+            <th>Akcje</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.id }}</td>
+                <td>{{ entity.name }}</td>
+                <td>
+                    <a href="{{ path(pathLinkEdit, { 'id': entity.id }) }}" title="Edycja"><i class="fa fa-pencil-square-o"></i></a>
+                    {% set deleteForm = deleteForms[entity.id] %}
+                    {{ form_start(deleteForm, { 'attr': {'class': 'd-inline'} }) }}
+                    <a href="#" onclick="$(this).closest('form').submit();return false;"><i class="fa fa-trash-o"></i></a>
+                    {{ form_end(deleteForm) }}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path(pathLinkNew) }}" class="btn btn-success btn-block btn-flat">Dodaj nowy</a>
+{% endblock %}

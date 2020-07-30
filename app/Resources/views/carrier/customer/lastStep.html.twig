@@ -1,0 +1,49 @@
+{% extends 'carrier/customer/base.html.twig' %}
+{% block body %}
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row">
+                <h1>Rejestracja dla {{ carrier.name }}</h1>
+            </div>
+        </div>
+
+        {{ form_start(form) }}
+
+        <div class="table final-step">
+            {{ form_label(form.relations) }}
+            <legend class="col-form-legend">Relacje</legend>
+
+            <div class="font-weight-light small pb-3">
+                {#Proszę podać realizowane przez Państwa kierunki, czyli w jakich krajach, kodach pocztowych możemy spodziewać się Państwa pojazdów. Proszę pamiętać zarówno o eksporcie, imporcie jak i przerzutach do innych krajów. <br />#}
+                {#Skąd - Proszę najpierw wybrać symbol kraju, a później kod pocztowy miasta. Wystarczy jeśli podacie Państwo pierwszą cyfrę z kodu pocztowego, jeśli jeździcie do całego regionu, druga cyfra oznacz podregion. <br />#}
+                {#Dokąd - Zasada działania wyboru jak w polu "Skąd". Dodatkowo można dodać więcej destynacji (kodów), jeśli interesują Państwa ładunki zarówno do jednego jak i kilku miejsc. Przykład: z kodu PL4 do IT1, IT2, IT3 itd. <br />#}
+                Proszę podać realizowane przez Państwa kierunki, czyli w jakich krajach, kodach pocztowych możemy spodziewać się Państwa pojazdów. Proszę pamiętać zarówno o eksporcie, imporcie jak i przerzutach do innych krajów. <br />
+                <p>UWAGA - w niektórych przypadkach brak możliwości podania terenu całego kraju, tylko konkretne regiony.</p> <br />
+                Skąd - Proszę najpierw wpisać symbol kraju, a później kod pocztowy miasta. Wystarczy, jeśli podacie Państwo pierwszą cyfrę z kodu pocztowego. Jeśli jeździcie do całego regionu, druga cyfra oznacza podregion. <br />
+                Dokąd - Zasada działania wyboru jak w polu "Skąd". Dodatkowo można dodać więcej destynacji (kodów), jeśli interesują Państwa ładunki zarówno do jednego jak i kilku miejsc. Przykład: z kodu PL4 do IT1, IT2, IT3 itd. <br />
+            </div>
+
+            {% for relation in form.relations %}
+                <div class="new-relation relations-collection">
+                    {{ form_widget(relation) }}
+                </div>
+            {% endfor %}
+            <div class="form-group relations">
+                <div class="form-row relation-add"
+                     data-prototype="{{ form_widget(form.relations.vars.prototype)|e('html_attr') }}"></div>
+            </div>
+            <hr/>
+            <div class="form-group font-weight-light small">
+                {{ form_label(form.clauses) }}
+                {{ form_widget(form.clauses) }}
+                {{ form_errors(form.clauses) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.add_destination_link').click();
+        });
+    </script>
+{% endblock %}

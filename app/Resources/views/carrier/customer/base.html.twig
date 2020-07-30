@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    {{ include('headIncludes.html.twig') }}
+</head>
+<body class="hold-transition naved-body">
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-white">
+    <div class="logo">
+        <a class="navbar-brand" href="#"><img src="{{ asset('build/images/logo.png') }}" height="60"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+
+    <div class="collapse navbar-collapse navbar-menu" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto navbar-right navbar-text">
+            <li>&nbsp; </li>
+        </ul>
+    </div>
+</nav>
+{% if app.request.hasPreviousSession %}
+    {% for type, messages in app.session.flashbag.all() %}
+        {% for message in messages %}
+            <div class="alert alert-{{ type }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+{% endif %}
+
+<div class="container">
+        {% block body %}
+            {% block site_content %}
+
+            {% endblock site_content %}
+        {% endblock %}
+</div>
+
+</body>
+</html>

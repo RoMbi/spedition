@@ -1,0 +1,101 @@
+label:
+    id: ID
+    username: Nazwa użytkownika
+    email: Email
+    enabled: Enabled
+    last_login: Last login
+    rolesString: Role
+    _action: Akcja
+    user: Użytkownik
+    admin: Admin
+    super_admin: Super Admin
+    users: Users
+    roles: Role
+    environment: Environment
+    environmentName: Environment name
+    environmentCode: Environment code
+    environments: Environments
+    createdAt: Added
+    submit: Wyślij
+    reset_password: Resetuj hasło
+    password: Hasło
+    forgot_password: Zapomniałeś hasła?
+    remember_me: Remember me
+    profile: Profile
+    logout: Logout
+    online: Online
+    instanceCode: Instance code
+    instance: Instance
+    instances: Instances
+    website: Website
+    websites: Websites
+    websiteName: Website name
+    websiteCode: Website code
+    updatedAt: Updated
+    module: Module
+    modules: Modules
+    moduleName: Module name
+    moduleVersion: Module version
+    moduleNamespace: Namespace
+    storeCode: Store code
+    storeName: Store name
+    stores: Stores
+    store: Store
+    buildVersion: Build version
+    buildVersions: Build versions
+    isExists: Exists
+    RFC: RFC
+    RFCcode: RFC Code
+    RFCname: RFC Name
+    RFCdescription: RFC Description
+    RFCurl: RFC Url
+    contacts: Contacts
+    contact: Contact
+    firstName: First name
+    lastName: Last name
+    phoneNumber: Phone number
+    contactRole: Role
+    coreConfig: Core Config
+    coreConfigs: Core Configs
+    coreConfigScope: Core Config Scope
+    coreConfigPath: Core Config Path
+    coreConfigValue: Core Config Value
+    coreConfigLabel: Core Config Label
+    configId: Config Id
+    changelogs: Changelogs
+    changelog: Changelog
+    originalValue: Original value
+    newValue: New value
+    retype_password: Powtórz hasło
+
+title:
+    sign_in: Zaloguj się aby rozpocząć sesję
+    register: Zarejstruj nowego użytkownika
+
+breadcrumb:
+    link_user_list: User List
+    link_user_create: Create User
+    link_environment_list: Environment List
+    link_environment_create: Create Environment
+    link_instance_list: Instance List
+    link_instance_create: Create Instance
+    link_website_list: Website List
+    link_website_create: Create Website
+    link_module_list: Module List
+    link_module_create: Create Module
+    link_store_list: Store List
+    link_store_create: Create Store
+    link_build_version_list: Build Version List
+    link_build_create_list: Create Build Version
+    link_r_f_c_list: RFC List
+    link_r_f_c_create: RFC Create
+    link_contact_list: Contact List
+    link_contact_create: Create Contact
+    link_core_config_list: Core Config List
+    link_core_config_create: Core Config Create
+    link_change_log_list: Changelog List
+    link_changelog_create: Create Changelog
+
+
+
+

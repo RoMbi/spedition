@@ -1,0 +1,104 @@
+
+.navbar-dark .navbar-nav a.nav-link.active::after,
+.navbar-light .navbar-nav a.nav-link.active::after {
+    position: absolute;
+    content: "";
+    width: calc(100% - 30px);
+    height: 5px;
+    left: 15px;
+    bottom: 0;
+    background-color: #ed8a54;
+    box-sizing: border-box;
+}
+
+.navbar-dark .navbar-nav a.nav-link::before,
+.navbar-light .navbar-nav a.nav-link::before {
+    position: absolute;
+    content: "";
+    width: 4px;
+    height: 4px;
+    right: -2px;
+    top: calc(50% - 2px);
+    border-radius: 50%;
+    background: rgba(250, 250, 250, 0.2);
+}
+
+.navbar-dark .navbar-nav a.nav-link,
+.navbar-light .navbar-nav a.nav-link {
+    position: relative;
+    display: block;
+    font-size: 16px;
+    line-height: 1.5;
+    font-weight: 300;
+    padding: 12px 20px;
+}
+
+.navbar-menu{
+    background-color: #2b6aa1;
+}
+
+.navbar-brand{
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.navbar {
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+}
+
+.logo{
+    z-index: 1;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-bottom: 0;
+}
+@media (min-width: 992px){
+    .logo {
+        /*padding-top: 10px;*/
+    }
+    .logo::after{
+        position: absolute;
+        content: "";
+        z-index: -1;
+        height: 60px;
+        width: 60px;
+        background-color: #ffffff;
+        -webkit-transform: rotate(135deg);
+        -ms-transform: rotate(135deg);
+        transform: rotate(135deg);
+        bottom: 18px;
+        left: 206px;
+    }
+    .logo::before{
+        position: absolute;
+        content: "";
+        z-index: -1;
+        height: 5px;
+        width: 260px;
+        background-color: #2b6aa1;
+        bottom: 0px;
+        left: 0px;
+    }
+    .navbar-menu{
+        padding-left: 50px;
+        margin-top: 20px;
+    }
+}
+
+.navbar-toggler{
+    background-color: #2b6aa1;
+}
+
+.container{
+    padding-top: 100px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}

@@ -1,0 +1,14 @@
+<table class="table table-bordered">
+    <tbody>
+    <tr class="table-active">
+        <th>
+            {{ relation.fromLocation.code }}
+        </th>
+    </tr>
+    {% for destination in relation.destinations %}
+        <tr>
+            <td>{{ destination.code }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

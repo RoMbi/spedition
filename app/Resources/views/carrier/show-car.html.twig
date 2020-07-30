@@ -1,0 +1,34 @@
+<table class="table table-bordered">
+    <tbody>
+    <tr class="table-active">
+        <th colspan="5">
+            {{ car.type.name }} x{{ car.quantity }}
+        </th>
+    </tr>
+    <tr>
+        <td class="w-25">
+            {{ car.build.name }}
+        </td>
+
+        {% set equipmentString = "" %}
+        {% set equipments = [] %}
+        {% for equipment in car.equipments %}
+            {% set equipments = equipments|merge([equipment.name]) %}
+        {% endfor %}
+        {% set equipmentString = equipmentString ~ equipments|join(', ') %}
+        <td class="w-25">
+            {% if not equipmentString|length %}
+                brak wyposażenia
+            {% else %}
+                {{ equipmentString|raw }}
+            {% endif %}
+        </td>
+        <td class="w-25">
+            max palet: <b>{{ car.paletteCapacity }}</b>
+        </td>
+        <td class="w-25">
+            <b>{{ car.length }}</b> x <b>{{ car.width }}</b> x <b>{{ car.height }}</b>
+        </td>
+    </tr>
+    </tbody>
+</table>

@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row">
+                <h1>Nowy przewoźnik</h1>
+            </div>
+        </div>
+        {{ form_start(form) }}
+        <div class="table">
+            <div class="form-group">
+                {{ form_label(form.carrierName) }}
+                {{ form_widget(form.carrierName) }}
+                {{ form_errors(form.carrierName) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.carrierIdentifier) }}
+                {{ form_widget(form.carrierIdentifier) }}
+                {{ form_errors(form.carrierIdentifier) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

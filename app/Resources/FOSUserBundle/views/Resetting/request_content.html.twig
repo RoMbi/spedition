@@ -1,0 +1,21 @@
+{% block fos_user_content %}
+    <p class="login-box-msg">{{ 'label.reset_password'|trans }}</p>
+
+    <form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
+        <div class="form-group has-feedback">
+            <label for="username">{{ 'label.email'|trans }}</label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="fa fa-user form-control-feedback"></i></div>
+                </div>
+                <input type="email" class="form-control" id="username" name="username" required="required"  placeholder="{{ 'label.email'|trans }}"/>
+            </div>
+        </div>
+        <div class="form-group has-feedback">
+            <input type="submit" class="btn btn-primary btn-block btn-flat" value="{{ 'label.submit'|trans }}" />
+        </div>
+    </form>
+
+    <a href="{{ path('fos_user_security_login') }}" class="text-center">Już pamiętam!</a>
+
+{% endblock %}

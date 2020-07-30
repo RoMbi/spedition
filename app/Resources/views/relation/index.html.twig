@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Relations list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for relation in relations %}
+            <tr>
+                <td><a href="{{ path('relation_show', { 'id': relation.id }) }}">{{ relation.id }}</a></td>
+                <td>{{ relation.from }}</td>
+                <td>{{ relation.to }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('relation_show', { 'id': relation.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('relation_edit', { 'id': relation.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('relation_new') }}">Create a new relation</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ carrier.name }}</h1>
+    <div class="table-wrapper">
+        <div class="table-title">
+            <table class="table table-striped">
+                {#<thead class="thead-dark">#}
+                {#<tr>#}
+                {#<th colspan="2">{{ carrier.name }}</th>#}
+                {#</tr>#}
+                {#</thead>#}
+                <tbody>
+                <tr>
+                    <th>Osoba</th>
+                    <td>{{ carrier.person }}</td>
+                </tr>
+                <tr>
+                    <th>ID</th>
+                    <td>{{ carrier.identifier }}</td>
+                </tr>
+                <tr>
+                    <th>Baza</th>
+                    <td>{{ carrier.base }}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>
+                        <a href="mailto:{{ carrier.email }}">
+                            {{ carrier.email }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Telefon</th>
+                    <td>
+                        <a href="tel:{{ carrier.phone }}">
+                            {{ carrier.phone }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Samochody</th>
+                    <td>
+                        <div class="table-wrapper">
+                            {% for car in carrier.cars %}
+                                {{ include(':carrier:show-car.html.twig', {car: car}) }}
+                            {% endfor %}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Relacje</th>
+                    <td>
+                        <div class="table-wrapper">
+                            {% for relation in carrier.relations %}
+                                {{ include(':carrier:show-relation.html.twig', {relation: relation}) }}
+                            {% endfor %}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Zaznaczone <br/>zgody</th>
+                    <td>
+                        {% if carrier.clauses|length %}
+                            <div class="table-wrapper">
+                                <table class="table table-bordered">
+                                    <tbody>
+                                    {% for clause in carrier.clauses %}
+                                        <tr>
+                                            <td>
+                                                - {{ clause.content|raw }}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            brak
+                        {% endif %}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <a href="{{ path('carrier_edit', { 'id': carrier.id }) }}" class="form-row btn btn-primary btn-block btn-flat">Edytuj</a>
+    {{ form_start(delete_form) }}
+    <input type="submit" value="Usuń przewoźnika" class="form-row btn btn-danger btn-block btn-flat">
+    {{ form_end(delete_form) }}
+
+{% endblock %}

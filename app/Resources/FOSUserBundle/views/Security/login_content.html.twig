@@ -1,0 +1,45 @@
+{% block fos_user_content %}
+    {% if error %}
+        <div class="alert alert-danger text-center" style="position: absolute; top: 0; width: 100vw; left: 0;">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+    <p class="login-box-msg">Logowanie</p>
+
+    <form action="{{ path("fos_user_security_check") }}" method="post">
+        {% if csrf_token %}
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
+        {% endif %}
+        <div class="form-group has-feedback">
+            <label for="username">{{ 'label.username'|trans }}</label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="fa fa-user form-control-feedback"></i></div>
+                </div>
+                <input type="input" class="form-control" id="username" name="_username" value="{{ last_username }}" required="required" placeholder="{{ 'label.username'|trans }}">
+            </div>
+        </div>
+        <div class="form-group has-feedback">
+            <label for="password">{{ 'label.password'|trans }}</label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="fa fa-lock form-control-feedback"></i></div>
+                </div>
+                <input type="password" class="form-control" id="password" name="_password" required="required" placeholder="{{ 'label.password'|trans }}">
+            </div>
+        </div>
+
+        <div class="row">
+            {#<div class="col-sm-8">#}
+                {#<div class="checkbox icheck">#}
+                    {#<input type="checkbox" id="remember_me" name="_remember_me" value="on"/>#}
+                    {#<label for="remember_me">{{ 'label.submit'|trans }}</label>#}
+                {#</div>#}
+            {#</div>#}
+            <div class="col-sm-12">
+                <input type="submit" class="btn btn-primary btn-block btn-flat" id="_submit" name="_submit" value="{{ 'label.submit'|trans }}"/>
+            </div>
+        </div>
+    </form>
+    <hr/>
+    {#<a href="{{ path('fos_user_resetting_request') }}" class="text-center">{{ 'label.forgot_password'|trans }}</a>#}
+
+{% endblock %}

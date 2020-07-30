@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row">
+                <h1>Nowa relacja dla {{ relation.carrier.name }}</h1>
+            </div>
+        </div>
+        {{ form_start(form) }}
+        <div class="table">
+            <div class="form-group">
+                {{ form_label(form.from) }}
+                {{ form_widget(form.from) }}
+                {{ form_errors(form.from) }}
+            </div>
+            <div class="destinations">
+                <div class="destination-add form-group"
+                     data-prototype="<div class='col-sm-8'>{{ form_widget(form.destinations.vars.prototype.name)|e('html_attr') }}</div>"></div>
+            </div>
+            <div class="form-row">
+                <input type="submit" value="Zapisz" class="btn btn-success btn-block btn-flat"/>
+            </div>
+            <div class="form-row">
+                <a href="{{ app.request.headers.get('referer') }}" class="btn btn-secondary btn-block btn-flat">Wróć</a>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}
