@@ -82,6 +82,7 @@
                         <th>Nazwa</th>
                         <th>Baza</th>
                         <th>Osoba / ID</th>
+                        <th>Telefon</th>
                         <th>Email</th>
                         <th>Relacje</th>
                     </tr>
@@ -93,6 +94,7 @@
                             <td><a href="{{ path('carrier_show', { 'id': carrier.id }) }}">{{ carrier.name }}</a></td>
                             <td>{{ carrier.base }}</td>
                             <td>{{ carrier.person }} / {{ carrier.identifier }}</td>
+                            <td><a href="tel:{{ carrier.phone }}" >{{ carrier.phone }}</a></td>
                             <td>
                                 <a href="mailto:{{ carrier.email }}">
                                     {{ carrier.email }}

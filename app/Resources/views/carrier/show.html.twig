@@ -72,6 +72,14 @@
                         </td>
                     </tr>
                 {% endif %}
+                {% if carrier.createdAt != null %}
+                    <tr>
+                        <th>Data utworzenia</th>
+                        <td>
+                            {{ carrier.createdAt.format("d-m-Y H:m") }}
+                        </td>
+                    </tr>
+                {% endif %}
                 <tr>
                     <th>Samochody</th>
                     <td>
