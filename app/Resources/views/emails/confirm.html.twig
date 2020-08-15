@@ -1,0 +1,12 @@
+<h1>Rejestracja zakończona pomyślnie</h1>
+
+Link: <a href="{{ url('carrier_show', { 'id': carrier.id }) }}">{{ url('carrier_show', { 'id': carrier.id }) }}</a>
+
+<h3>Szczegóły:</h3>
+<ul>
+    <li>Nazwa: <strong>{{ carrier.name }}</strong></li>
+    <li>Osoba: <strong>{{ carrier.person }}</strong></li>
+    <li>Id: <strong>{{ carrier.id }}</strong></li>
+    <li>Email: <strong>{{ carrier.email }}</strong></li>
+    <li>Telefon: <strong>{{ carrier.phone }}</strong></li>
+</ul>

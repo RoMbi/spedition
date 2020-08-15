@@ -94,6 +94,7 @@
 
 .container{
     padding-top: 100px;
+    padding-bottom: 20px;
 }
 
 input::-webkit-outer-spin-button,

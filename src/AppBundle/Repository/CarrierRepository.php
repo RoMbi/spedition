@@ -26,7 +26,7 @@ class CarrierRepository extends EntityRepository
             ->leftJoin('r.fromLocation', 'fromLocation')
             ->leftJoin('car.equipments', 'e');
 
-        if ($data['base']) {
+        if ($data['base'] !== null) {
             $query
                 ->andWhere('c.base LIKE :base')
                 ->setParameter('base', $data['base'] . '%');

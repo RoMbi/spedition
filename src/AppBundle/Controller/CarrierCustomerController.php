@@ -5,6 +5,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Dictionary\CarrierStatus;
 use AppBundle\Entity\Carrier;
 use AppBundle\Entity\CarrierForm;
 use AppBundle\Form\CarrierCustomerFirstType;
@@ -49,13 +50,19 @@ class CarrierCustomerController extends Controller
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \Symfony\Component\Form\Exception\LogicException
      */
-    public function newAction(CarrierForm $carrierForm, Request $request)
+    public function newAction(CarrierForm $carrierForm, Request $request, $code)
     {
         if($carrierForm->isProcessed()){
             return $this->render('carrier/customer/success.html.twig');
         }
         if ($carrierForm->getCarrier() instanceof Carrier) {
             $carrier = $carrierForm->getCarrier();
+            if($carrier->getStatus() === CarrierStatus::_NEW) {
+                $carrier->setStatus(CarrierStatus::_OPEN);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($carrier);
+                $em->flush();
+            }
         } else {
             $carrier = new Carrier();
             $carrier
@@ -70,6 +77,7 @@ class CarrierCustomerController extends Controller
             $this->validateData($carrierForm, $carrier);
 
             $carrierForm->setCarrier($carrier);
+            $carrier->setStatus(CarrierStatus::_PROCEEDED);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($carrier);
@@ -140,7 +148,7 @@ class CarrierCustomerController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Symfony\Component\Form\Exception\LogicException
      */
-    public function lastStep(CarrierForm $carrierForm, Carrier $carrier, Request $request, CarrierCollectionChange $carrierCollectionChange)
+    public function lastStep(CarrierForm $carrierForm, Carrier $carrier, Request $request, CarrierCollectionChange $carrierCollectionChange, \Swift_Mailer $mailer)
     {
         $this->validateData($carrierForm, $carrier);
         $originalRelations = new ArrayCollection();
@@ -157,11 +165,26 @@ class CarrierCustomerController extends Controller
 
             $carrierCollectionChange->handleRelations($carrier, $originalRelations);
 
-            $carrierForm->setProcessed(true);
+            $carrierForm->setProcessed(1);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($carrier);
             $em->flush();
+
+            $carrierName = $carrier->getName();
+            $message = (new \Swift_Message('[SYSTEM] Rejestracja użytkownika ' . $carrierName))
+                ->setFrom('system@lforce.pl')
+                ->setTo('system@lforce.pl')
+                ->setBody(
+                    $this->renderView(
+                        'emails/confirm.html.twig',
+                        array(
+                            'carrier' => $carrier,
+                        )
+                    ),
+                    'text/html'
+                );
+            $mailer->send($message);
 
             return $this->render('carrier/customer/success.html.twig');
         }
@@ -179,8 +202,8 @@ class CarrierCustomerController extends Controller
      */
     private function validateData(CarrierForm $carrierForm, Carrier $carrier)
     {
-        if ($carrierForm->isProcessed() || !($carrierForm->getCarrierName() === $carrier->getName() && $carrierForm->getCarrierIdentifier() === $carrier->getIdentifier())) {
-            throw new LogicException('Próba manipulacji danych!');
-        }
+        // if (!($carrierForm->getCarrierName() === $carrier->getName() && $carrierForm->getCarrierIdentifier() === $carrier->getIdentifier())) {
+        //     throw new LogicException('Próba manipulacji danych!');
+        // }
     }
 }

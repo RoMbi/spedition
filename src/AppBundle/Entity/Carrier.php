@@ -5,14 +5,18 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Carrier
  *
  * @ORM\Table(name="ca_carrier")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CarrierRepository")
+ * @UniqueEntity(fields = "name")
+ * @UniqueEntity(fields = "identifier")
  */
 class Carrier
 {
@@ -28,27 +32,27 @@ class Carrier
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, unique=true, nullable=true)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="person", type="string", length=255)
+     * @ORM\Column(name="person", type="string", length=255, nullable=true)
      */
     private $person;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="identifier", type="string", length=255)
+     * @ORM\Column(name="identifier", type="string", length=255, unique=true, nullable=true)
      */
     private $identifier;
 
     /**
      * @var string
-     * @ORM\Column(name="base", type="string", length=20)
+     * @ORM\Column(name="base", type="string", length=20, nullable=true)
      */
     private $base;
 
@@ -66,13 +70,13 @@ class Carrier
 
     /**
      * @var string
-     * @ORM\Column(name="email", type="string", length=100)
+     * @ORM\Column(name="email", type="string", length=100, nullable=true)
      */
     private $email;
 
     /**
      * @var string
-     * @ORM\Column(name="phone", type="bigint", length=15)
+     * @ORM\Column(name="phone", type="bigint", length=15, nullable=true)
      */
     private $phone;
 
@@ -85,6 +89,24 @@ class Carrier
      *      )
      */
     private $clauses;
+
+    /**
+     * @var int
+     * @ORM\Column(name="status", type="integer", length=4, nullable=true)
+    */
+    private $status;
+
+    /**
+     * @var string
+     * @ORM\Column(name="creatorName", type="string", length=255, nullable=true)
+     */
+    private $creatorName; // createdBy nieuku
+
+    /**
+     * @var DateTime
+     * @ORM\Column(name="createdAt", type="datetime", nullable=true)
+     */
+    private $createdAt;
 
     public function __construct()
     {
@@ -319,6 +341,66 @@ class Carrier
     {
         $this->clauses = $clauses;
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param int $status
+     * @return $this
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    /**
+     * Set creatorName
+     *
+     * @param string $creatorName
+     *
+     * @return Carrier
+     */
+    public function setCreatorName($creatorName)
+    {
+        $this->creatorName = $creatorName;
+        return $this;
+    }
+
+    /**
+     * Get creatorName
+     *
+     * @return string
+     */
+    public function getCreatorName()
+    {
+        return $this->creatorName;
+    }
+
+    /**
+     * @param DateTime $createdAt
+     *
+     * @return $this
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 }
 

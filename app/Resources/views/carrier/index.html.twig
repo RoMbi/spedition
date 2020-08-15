@@ -3,16 +3,24 @@
 {% endblock %}
 
 {% block body %}
-    <table class="table table-filter">
+    <table id="datatable" class="table table-filter">
         <thead>
         <tr>
-            <th>Nazwa</th>
-            <th>Osoba</th>
-            <th>ID</th>
-            <th>Baza</th>
-            <th>Email</th>
-            <th>Akcje</th>
+            <td colspan="9">
+                <a style="margin: 30px 0;" href="{{ path('carrier_new') }}" class="btn btn-success btn-block btn-flat">Dodaj przewoźnika</a>
+            </td>
         </tr>
+            <tr>
+                <th>Nazwa</th>
+                <th>Osoba</th>
+                <th>ID</th>
+                <th>Baza</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Utworzył</th>
+                <th>Kiedy</th>
+                <th class="no-sort">Akcje</th>
+            </tr>
         </thead>
         <tbody>
         {% for carrier in carriers %}
@@ -27,11 +35,84 @@
                     </a>
                 </td>
                 <td>
+                    {% if carrier.status == 0 %}
+                        <span class="badge badge-danger">Nowy</span>
+                    {% endif %}
+                    {% if carrier.status == 2 %}
+                        <span class="badge badge-success">Otwarty</span>
+                    {% endif %}
+                    {% if carrier.status == 3 %}
+                        <span class="badge badge-warning">W trakcie</span>
+                    {% endif %}
+                    {% if carrier.status == 1 %}
+                        <span class="badge badge-dark">Zamknięty</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {{ carrier.creatorName }}
+                </td>
+                <td>
+                    {% if carrier.createdAt != null %}
+                        {{ carrier.createdAt.format('d-m-Y') }}
+                    {% endif %}
+                </td>
+                <td>
                     <a href="{{ path('carrier_show', { 'id': carrier.id }) }}" title="Podgląd"><i class="fa fa-eye"></i></a>
                     <a href="{{ path('carrier_edit', { 'id': carrier.id }) }}" title="Edycja"><i class="fa fa-pencil-square-o"></i></a>
+                </td>
             </tr>
         {% endfor %}
         </tbody>
+        <tfoot>
+            <tr>
+                <th>Nazwa</th>
+                <th>Osoba</th>
+                <th>ID</th>
+                <th>Baza</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Utworzył</th>
+                <th>Kiedy</th>
+                <th class="no-sort">Akcje</th>
+            </tr>
+        </tfoot>
     </table>
-    <a href="{{ path('carrier_new') }}" class="btn btn-success btn-block btn-flat">Dodaj przewoźnika</a>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var table = $('#datatable').DataTable( {
+                "paging":   false,
+                columnDefs: [
+                    { targets: 'no-sort', orderable: false }
+                ],
+                "language": {
+                    search: "Wyszukaj:",
+                    emptyTable: "Nie znaleziono wyników",
+                    zeroRecords: "Nie znaleziono wyników",
+                    info:           "Znaleziono _END_ wyników",
+                    infoEmpty:      "Brak wyników",
+                    infoFiltered:   "(ze wszystkich _MAX_)",
+                    infoPostFix:    "",
+                }
+            } );
+            $('#datatable_wrapper .dataTables_info').prependTo('#datatable_filter');
+            // Filter columns
+            $('#datatable tfoot th').each( function () {
+                var title = $(this).text();
+                $(this).html( '<input style="max-width: 100px" type="text" placeholder="Szukaj '+title+'" />' );
+            } );
+            table.columns().every( function () {
+                var that = this;
+                $( 'input', this.footer() ).on( 'keyup change', function () {
+                    if ( that.search() !== this.value ) {
+                        that
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+            } );
+            $('#datatable tfoot .no-sort').html('&nbsp;');
+            $('#datatable tfoot tr').appendTo('#datatable thead');
+        });
+    </script>
 {% endblock %}

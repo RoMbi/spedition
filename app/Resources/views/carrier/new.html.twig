@@ -54,6 +54,12 @@
             </div>
             <hr />
             <div class="form-group">
+                {{ form_label(form.status) }}
+                {{ form_widget(form.status) }}
+                {{ form_errors(form.status) }}
+            </div>
+            <hr />
+            <div class="form-group">
                 {{ form_label(form.clauses) }}
                 {{ form_widget(form.clauses) }}
                 {{ form_errors(form.clauses) }}

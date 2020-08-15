@@ -5,6 +5,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Dictionary\CarrierStatus;
+use AppBundle\Entity\Carrier;
 use AppBundle\Entity\CarrierForm;
 use AppBundle\Form\CarrierFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -29,6 +31,7 @@ class CarrierFormController extends Controller
         $carrierForm = new CarrierForm();
         $form = $this->createForm(CarrierFormType::class, $carrierForm);
         $form->handleRequest($request);
+        $creatorName = $this->get('security.token_storage')->getToken()->getUser()->getUsername();
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -37,6 +40,19 @@ class CarrierFormController extends Controller
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($carrierForm);
+            $em->flush();
+
+            $carrier = new Carrier();
+            $carrier
+                ->setIdentifier($carrierForm->getCarrierIdentifier())
+                ->setName($carrierForm->getCarrierName())
+                ->setStatus(CarrierStatus::_NEW)
+                ->setCreatorName($creatorName);
+
+            $carrierForm->setCarrier($carrier);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($carrier);
             $em->flush();
 
             return $this->redirectToRoute('carrier_form_show', array('id' => $carrierForm->getId()));

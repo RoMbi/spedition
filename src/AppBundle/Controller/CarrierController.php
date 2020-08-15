@@ -5,10 +5,13 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Dictionary\CarrierStatus;
 use AppBundle\Entity\Car;
 use AppBundle\Entity\Carrier;
+use AppBundle\Entity\CarrierForm;
 use AppBundle\Form\CarrierType;
 use AppBundle\Service\CarrierCollectionChange;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -52,6 +55,7 @@ class CarrierController extends Controller
         $carrier = new Carrier();
         $form = $this->createForm(CarrierType::class, $carrier);
         $form->handleRequest($request);
+        $createdBy = $this->get('security.token_storage')->getToken()->getUser()->getUsername();
 
         if ($form->isSubmitted() && $form->isValid()) {
             foreach ($carrier->getCars() as $re) {
@@ -61,8 +65,25 @@ class CarrierController extends Controller
                 $relation->setCarrier($carrier);
             }
 
+            $carrier
+                ->setStatus(CarrierStatus::_CLOSED)
+                ->setCreatorName($createdBy)
+                ->setCreatedAt(new DateTime('now'));
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($carrier);
+            $em->flush();
+
+            $carrierForm = new CarrierForm();
+            $carrierForm
+                ->setCarrierName($carrier->getName())
+                ->setCarrier($carrier)
+                ->setCarrierIdentifier($carrier->getIdentifier())
+                ->generateCode();
+            $this->validateCode($carrierForm);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($carrierForm);
             $em->flush();
 
             return $this->redirectToRoute('carrier_show', array('id' => $carrier->getId()));
@@ -75,6 +96,27 @@ class CarrierController extends Controller
     }
 
     /**
+     * @param CarrierForm $carrierForm
+     */
+    private function validateCode(CarrierForm $carrierForm)
+    {
+        if($this->isDuplicate($carrierForm)){
+            $carrierForm->regenerateCode();
+            $this->validateCode($carrierForm);
+        }
+    }
+
+    /**
+     * @param CarrierForm $carrierForm
+     * @return bool
+     */
+    private function isDuplicate(CarrierForm $carrierForm)
+    {
+        $em = $this->getDoctrine()->getManager();
+        return (boolean)$em->getRepository(CarrierForm::class)->findOneBy(['code' => $carrierForm->getCode()]);
+    }
+
+    /**
      * Finds and displays a carrier entity.
      *
      * @Route("/{id}", name="carrier_show")
@@ -84,13 +126,31 @@ class CarrierController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction(Carrier $carrier)
+    public function showAction(Carrier $carrier, $id)
     {
+
         $deleteForm = $this->createDeleteForm($carrier);
+
+        $em = $this->getDoctrine()->getManager();
+
+        $code = $em->createQuery(
+            'SELECT cf.code
+            FROM AppBundle:Carrier c
+            JOIN AppBundle:CarrierForm cf
+            WHERE c.id = cf.carrier
+            AND c.id = :id
+            '
+        )->setParameter('id', $id)->getOneOrNullResult();
+
+        if($code != null) {
+            $code = implode(" ", $code);
+        }
+
 
         return $this->render('carrier/show.html.twig', array(
             'carrier' => $carrier,
             'delete_form' => $deleteForm->createView(),
+            'code' => $code
         ));
     }
 

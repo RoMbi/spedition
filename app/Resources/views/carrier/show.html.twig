@@ -40,6 +40,39 @@
                     </td>
                 </tr>
                 <tr>
+                    <th>Status</th>
+                    <td>
+                        {% if carrier.status == 0 %}
+                            <span class="badge badge-danger">Nowy</span>
+                        {% endif %}
+                        {% if carrier.status == 2 %}
+                            <span class="badge badge-success">Otwarty</span>
+                        {% endif %}
+                        {% if carrier.status == 3 %}
+                            <span class="badge badge-warning">W trakcie</span>
+                        {% endif %}
+                        {% if carrier.status == 1 %}
+                            <span class="badge badge-dark">Zamknięty</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% if code != null and carrier.status != 1 %}
+                    <tr>
+                        <th>Link</th>
+                        <td>
+                            https://ankieta.lforce.pl/{{ code }}
+                        </td>
+                    </tr>
+                {% endif %}
+                {% if carrier.creatorName != null %}
+                    <tr>
+                        <th>Utworzył</th>
+                        <td>
+                            {{ carrier.creatorName }}
+                        </td>
+                    </tr>
+                {% endif %}
+                <tr>
                     <th>Samochody</th>
                     <td>
                         <div class="table-wrapper">

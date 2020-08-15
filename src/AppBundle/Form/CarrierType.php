@@ -5,6 +5,7 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Dictionary\CarrierStatus;
 use AppBundle\Entity\Carrier;
 use AppBundle\Entity\Clause;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -16,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class CarrierType extends AbstractType
 {
@@ -72,6 +74,17 @@ class CarrierType extends AbstractType
             ->add('phone', NumberType::class, [
                     'attr' => ['placeholder' => 'Telefon'],
                     'label' => 'Telefon',
+                ]
+            )
+            ->add('status', ChoiceType::class, [
+                'choices'  => [
+                    'Nowy' => CarrierStatus::_NEW,
+                    'Zamknięty' => CarrierStatus::_CLOSED,
+                    'Otwarty' => CarrierStatus::_OPEN,
+                    'W trakcie' => CarrierStatus::_PROCEEDED
+                ],
+                'attr' => ['placeholder' => 'Status'],
+                'label' => 'Status'
                 ]
             )
             ->add('clauses', EntityType::class, [

@@ -20,6 +20,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Class CarrierSearchType
@@ -45,13 +46,21 @@ class CarrierSearchType extends AbstractType
                 'choice_label' => 'code',
                 'placeholder' => 'Z kraj / nazwa relacji',
                 'required' => false,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')
+                        ->orderBy('u.code', 'ASC');
+                },
             ])
             ->add('destinations', EntityType::class, [
                 'class' => Location::class,
                 'choice_label' => 'code',
                 'label' => 'Cel / destynacja',
                 'placeholder' => 'Cel / destynacja',
-                'required' => false
+                'required' => false,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')
+                        ->orderBy('u.code', 'ASC');
+                },
             ])
             ->add('type', EntityType::class, [
                     'class' => CarTypeEntity::class,

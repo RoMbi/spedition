@@ -6,12 +6,16 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * Class CarrierForm
  *
  * @ORM\Table(name="ca_carrier_form")
  * @ORM\Entity()
+ * @UniqueEntity(fields = "carrierName")
+ * @UniqueEntity(fields = "carrierIdentifier")
  */
 class CarrierForm
 {
@@ -27,14 +31,14 @@ class CarrierForm
     /**
      * @var string
      *
-     * @ORM\Column(name="carrierName", type="string", length=255)
+     * @ORM\Column(name="carrierName", type="string", length=255, unique=true)
      */
     private $carrierName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="carrierIdentifier", type="string", length=255)
+     * @ORM\Column(name="carrierIdentifier", type="string", length=255, unique=true)
      */
     private $carrierIdentifier;
 
@@ -46,17 +50,17 @@ class CarrierForm
     private $code;
 
     /**
-     * @var boolean
+     * @var int
      *
-     * @ORM\Column(name="processed", type="boolean", options={"default" : FALSE})
+     * @ORM\Column(name="processed", type="integer", options={"default" : 0})
      */
-    private $processed = false;
+    private $processed = 0;
 
     /**
      * @var Carrier
      *
      * @ORM\ManyToOne(targetEntity="Carrier", inversedBy="cars", cascade={"persist"})
-     * @ORM\JoinColumn(name="carrier", referencedColumnName="id")
+     * @ORM\JoinColumn(name="carrier", referencedColumnName="id", onDelete="CASCADE")
      */
     private $carrier;
 
@@ -123,7 +127,7 @@ class CarrierForm
     }
 
     /**
-     * @return bool
+     * @return int
      */
     public function isProcessed()
     {
@@ -131,7 +135,7 @@ class CarrierForm
     }
 
     /**
-     * @param bool $processed
+     * @param int $processed
      * @return $this
      */
     public function setProcessed($processed)
