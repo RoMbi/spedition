@@ -33,14 +33,18 @@ var $chosenGlobalConfig = {
 jQuery(document).ready(function () {
     // Get the ul that holds the collection of tags
     var $destinationAdd = $('div.relation-add');
+    var $fromAdd = $('div.relation-add');
     var $destinationCollection = $('div.relations');
+    var $fromCollection = $('div.relations');
 
     // add the "add a tag" anchor and li to the tags ul
     $destinationAdd.append($newDestinationLink);
+    $fromAdd.append($newDestinationLink);
 
     // count the current form inputs we have (e.g. 2), use that as the new
     // index when inserting a new item (e.g. 2)
     $destinationCollection.data('index', $destinationCollection.find(':input.form-control').length);
+    $fromCollection.data('index', $fromCollection.find(':input.form-control').length);
 
     $addDestinationLink.on('click', function (e) {
         // prevent the link from creating a "#" on the URL
@@ -58,7 +62,7 @@ jQuery(document).ready(function () {
         return false;
     });
 
-    $('.new-relation').find($("[id$='_fromLocation']")).chosen($chosenGlobalConfig).show().css(validationMessageFix);
+    $('.new-relation').find($("[id$='_fromLocations']")).chosen($chosenGlobalConfig).show().css(validationMessageFix);
     $('.new-relation').find($("[id$='_destinations']")).chosen($chosenGlobalConfig).show().css(validationMessageFix).css({"right": 0});
 });
 
@@ -84,7 +88,7 @@ function addRelationForm($collectionHolder, $newLinkLi) {
 
     var $addButton = $newLinkLi.parent().before(newForm);
 
-    $addButton.prev('.new-relation').find($("[id$='_fromLocation']")).chosen($chosenGlobalConfig).show().css(validationMessageFix);
+    $addButton.prev('.new-relation').find($("[id$='_fromLocations']")).chosen($chosenGlobalConfig).show().css(validationMessageFix);
     $addButton.prev('.new-relation').find($("[id$='_destinations']")).chosen($chosenGlobalConfig).show().css(validationMessageFix).css({"right": 0});
     // handle the removal, just for this example
     $('.remove-tag').click(function (e) {

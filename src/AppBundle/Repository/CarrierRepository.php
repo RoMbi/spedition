@@ -5,9 +5,10 @@
 
 namespace AppBundle\Repository;
 
-use AppBundle\Entity\Location;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * CarrierRepository
@@ -23,7 +24,7 @@ class CarrierRepository extends EntityRepository
             ->leftJoin('c.cars', 'car')
             ->leftJoin('c.relations', 'r')
             ->leftJoin('r.destinations', 'd')
-            ->leftJoin('r.fromLocation', 'fromLocation')
+            ->leftJoin('r.fromLocations', 'fromLocations')
             ->leftJoin('car.equipments', 'e');
 
         if ($data['base'] !== null) {
@@ -32,18 +33,30 @@ class CarrierRepository extends EntityRepository
                 ->setParameter('base', $data['base'] . '%');
         }
 
-        /** @var Location $fromLocation */
-        if ($fromLocation = $data['fromLocation']) {
-            $query
-                ->andWhere('fromLocation.code LIKE :fromLocationLike')
-                ->setParameter('fromLocationLike', $fromLocation->getCode() . '%');
+        /** @var ArrayCollection $fromLocations */
+        $fromLocations = $data['fromLocations'];
+        if ($fromLocations->count()) {
+            $criteria = Criteria::create();
+            foreach ($fromLocations as $fromLocation) {
+                $criteria->orWhere(
+                    $criteria::expr()->orX(
+                        $criteria::expr()->contains('fromLocations.code', $fromLocation->getCode())
+                    ));
+            }
+            $query->andWhere()->addCriteria($criteria);
         }
 
-        /** @var Location $destination */
-        if ($destination = $data['destinations']) {
-            $query
-                ->andWhere('d.code LIKE :destinationLike')
-                ->setParameter('destinationLike', $destination->getCode() . '%');
+        /** @var ArrayCollection $destinations */
+        $destinations = $data['destinations'];
+        if ($destinations->count()) {
+            $criteria = Criteria::create();
+            foreach ($destinations as $destination) {
+                $criteria->orWhere(
+                    $criteria::expr()->orX(
+                        $criteria::expr()->contains('d.code', $destination->getCode())
+                ));
+            }
+            $query->andWhere()->addCriteria($criteria);
         }
 
         if ($data['type']) {

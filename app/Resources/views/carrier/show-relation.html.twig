@@ -2,7 +2,12 @@
     <tbody>
     <tr class="table-active">
         <th>
-            {{ relation.fromLocation.code }}
+            {% set relationString = "" %}
+            {% set fromLocations = [] %}
+            {% for fromLocation in relation.fromLocations %}
+                {% set fromLocations = fromLocations|merge([fromLocation.code]) %}
+            {% endfor %}
+            {{ fromLocations|join(' / ') }}
         </th>
     </tr>
     {% for destination in relation.destinations %}

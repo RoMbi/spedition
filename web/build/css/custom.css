@@ -67,3 +67,11 @@ div.dataTables_wrapper div.dataTables_info {
 .modal .form-control {
     margin-bottom: 20px;
 }
+
+.chosen-choices, .chosen-container-multi {
+    height: 40px !important;
+}
+
+.remove-tag {
+    max-width: 8%;
+}

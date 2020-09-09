@@ -26,16 +26,17 @@ class Relation
     private $id;
 
     /**
-     * @var Location
-     *
-     * @ORM\ManyToOne(targetEntity="Location", cascade={"persist"})
-     * @ORM\JoinColumn(name="from_location", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="Location")
+     * @ORM\JoinTable(name="ca_relations_from_locations",
+     *      joinColumns={@ORM\JoinColumn(name="relation_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="location_id", referencedColumnName="id")}
+     *      )
      */
-    private $fromLocation;
+    private $fromLocations;
 
     /**
      * @ORM\ManyToMany(targetEntity="Location")
-     * @ORM\JoinTable(name="ca_relations_locations",
+     * @ORM\JoinTable(name="ca_relations_destination_locations",
      *      joinColumns={@ORM\JoinColumn(name="relation_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="location_id", referencedColumnName="id")}
      *      )
@@ -50,6 +51,7 @@ class Relation
 
     public function __construct()
     {
+        $this->fromLocations = new ArrayCollection();
         $this->destinations = new ArrayCollection();
     }
 
@@ -64,20 +66,20 @@ class Relation
     }
 
     /**
-     * @return Location
+     * @return Location[]|ArrayCollection
      */
-    public function getFromLocation()
+    public function getFromLocations()
     {
-        return $this->fromLocation;
+        return $this->fromLocations;
     }
 
     /**
-     * @param Location $from
+     * @param Location[]|ArrayCollection $fromLocations
      * @return $this
      */
-    public function setFromLocation(Location $from)
+    public function setFromLocations($fromLocations)
     {
-        $this->fromLocation = $from;
+        $this->fromLocations = $fromLocations;
         return $this;
     }
 
@@ -108,7 +110,7 @@ class Relation
     }
 
     /**
-     * @param $destinations
+     * @param Location[]|ArrayCollection $destinations
      * @return $this
      */
     public function setDestinations($destinations)

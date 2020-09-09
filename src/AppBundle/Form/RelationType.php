@@ -5,6 +5,7 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Dictionary\Location as LocationDictionary;
 use AppBundle\Entity\Location;
 use AppBundle\Entity\Relation;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -24,9 +25,10 @@ class RelationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('fromLocation', EntityType::class, [
+            ->add('fromLocations', EntityType::class, [
                     'class' => Location::class,
                     'choice_label' => 'code',
+                    'multiple' => true,
                     'label' => false,
                     'attr' => [
                         'class' => 'col-sm-5',
@@ -74,28 +76,9 @@ class RelationType extends AbstractType
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        $countries = [
-            'PL',
-            'SK',
-            'HU',
-            'CZ',
-            'AT',
-            'DE',
-            'CH',
-            'LU',
-            'BE',
-            'NL',
-            'FR',
-            'IT',
-            'ES',
-            'PT',
-        ];
-
-        $labelFixChoice = new ChoiceView([], '', 'Skąd', ['disabled' => 'disabled']);
-        array_unshift($view->children['fromLocation']->vars['choices'], $labelFixChoice);
-        foreach (array_reverse($countries) as $country) {
+        foreach (array_reverse(LocationDictionary::MAIN) as $country) {
             $newChoice = new ChoiceView([], '', $country, ['disabled' => 'disabled']);
-            array_unshift($view->children['fromLocation']->vars['choices'], $newChoice);
+            array_unshift($view->children['fromLocations']->vars['choices'], $newChoice);
             array_unshift($view->children['destinations']->vars['choices'], $newChoice);
         }
     }

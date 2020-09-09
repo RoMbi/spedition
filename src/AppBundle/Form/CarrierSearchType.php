@@ -5,6 +5,7 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Dictionary\Location as LocationDictionary;
 use AppBundle\Entity\CarBuild;
 use AppBundle\Entity\CarEquipment;
 use AppBundle\Entity\CarType as CarTypeEntity;
@@ -41,10 +42,14 @@ class CarrierSearchType extends AbstractType
                 'label' => 'Baza',
                 'required' => false
             ])
-            ->add('fromLocation', EntityType::class, [
+            ->add('fromLocations', EntityType::class, [
                 'class' => Location::class,
                 'choice_label' => 'code',
-                'placeholder' => 'Z kraj / nazwa relacji',
+                'multiple' => true,
+                'label' => 'Z kraj / nazwa relacji',
+                'attr' => [
+                    'data-placeholder' => 'Skąd',
+                ],
                 'required' => false,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')
@@ -54,8 +59,11 @@ class CarrierSearchType extends AbstractType
             ->add('destinations', EntityType::class, [
                 'class' => Location::class,
                 'choice_label' => 'code',
+                'multiple' => true,
                 'label' => 'Cel / destynacja',
-                'placeholder' => 'Cel / destynacja',
+                'attr' => [
+                    'data-placeholder' => 'Dokąd',
+                ],
                 'required' => false,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')
@@ -135,5 +143,19 @@ class CarrierSearchType extends AbstractType
     public function getBlockPrefix()
     {
         return 'appbundle_carriersearch';
+    }
+
+    /**
+     * @param FormView $view
+     * @param FormInterface $form
+     * @param array $options
+     */
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        foreach (array_reverse(LocationDictionary::MAIN) as $country) {
+            $newChoice = new ChoiceView([], '', $country, ['disabled' => 'disabled']);
+            array_unshift($view->children['fromLocations']->vars['choices'], $newChoice);
+            array_unshift($view->children['destinations']->vars['choices'], $newChoice);
+        }
     }
 }

@@ -18,9 +18,9 @@
             </div>
             <div class="row new-relation">
                 <div class="form-group col-sm-6">
-                    {{ form_label(form.fromLocation) }}
-                    {{ form_widget(form.fromLocation) }}
-                    {{ form_errors(form.fromLocation) }}
+                    {{ form_label(form.fromLocations) }}
+                    {{ form_widget(form.fromLocations) }}
+                    {{ form_errors(form.fromLocations) }}
                 </div>
                 <div class="form-group col-sm-6">
                     {{ form_label(form.destinations) }}
@@ -103,7 +103,11 @@
                             </td>
                             {% set relationString = "" %}
                             {% for relation in carrier.relations %}
-                                {% set relationString = relationString ~ "<b>" ~ relation.fromLocation.code ~ "</b> -> " %}
+                                {% set fromLocations = [] %}
+                                {% for fromLocation in relation.fromLocations %}
+                                    {% set fromLocations = fromLocations|merge([fromLocation.code]) %}
+                                {% endfor %}
+                                {% set relationString = relationString ~ "<b>" ~ fromLocations|join(' / ') ~ "</b> ->" %}
                                 {% set destinations = [] %}
                                 {% for destination in relation.destinations %}
                                     {% set destinations = destinations|merge([destination.code]) %}
