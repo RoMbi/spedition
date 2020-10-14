@@ -1,4 +1,5 @@
 imports:
+    - { resource: parameters.yml }
     - { resource: config.yml }
 
 framework:
@@ -28,3 +29,5 @@ monolog:
             type: server_log
             process_psr_3_messages: false
             host: 127.0.0.1:9911
+swiftmailer:
+    delivery_addresses: ['rombi.pl@gmail.com']

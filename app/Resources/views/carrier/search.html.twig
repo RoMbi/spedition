@@ -94,7 +94,7 @@
                             <td><a href="{{ path('carrier_show', { 'id': carrier.id }) }}">{{ carrier.name }}</a></td>
                             <td>{{ carrier.base }}</td>
                             <td>{{ carrier.person }} / {{ carrier.identifier }}</td>
-                            <td><a href="tel:{{ carrier.phone }}" >{{ carrier.phone }}</a></td>
+                            <td><a href="tel:{{ carrier.phone }}">{{ carrier.phone }}</a></td>
                             <td>
                                 <a href="mailto:{{ carrier.email }}">
                                     {{ carrier.email }}
@@ -120,19 +120,23 @@
                     </tbody>
                 </table>
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary btn-block btn-flat" data-toggle="modal" data-target="#myModal">E-mail do wyników</button>
+                <button type="button" class="btn btn-primary btn-block btn-flat" data-toggle="modal"
+                        data-target="#myModal">E-mail do wyników
+                </button>
                 <!-- Modal -->
                 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="myModalLabel">E-mail do wyników</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    </div>
-                        <div class="modal-body">
-                            {{ form_start(emailform) }}
-                            {{ form_end(emailform) }}
-                     </div>
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="myModalLabel">E-mail do wyników</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                            aria-hidden="true">&times;</span></button>
+                            </div>
+                            <div class="modal-body">
+                                {{ form_start(emailform) }}
+                                {{ form_end(emailform) }}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

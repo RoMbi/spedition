@@ -7,6 +7,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Carrier;
 use AppBundle\Form\CarrierSearchType;
+use KMS\FroalaEditorBundle\Form\Type\FroalaEditorType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,7 +47,14 @@ class SearchController extends Controller
 
         $emailForm = $this->createFormBuilder([])
         ->add('title', TextType::class, ['label' => 'Tytuł', 'required' => true])
-        ->add('message', TextareaType::class, ['label' => 'Wiadomość', 'required' => true])
+        ->add(
+            'message',
+            FroalaEditorType::class,
+            [
+                'label' => 'Wiadomość',
+                'required' => true,
+            ]
+        )
         ->add('submit', SubmitType::class, [
             'attr' => ['class' => 'btn btn-primary btn-block btn-flat'],
             'label' => 'Wyślij'
@@ -63,7 +71,7 @@ class SearchController extends Controller
             foreach ($results as $carrier) {
                 $message = (new \Swift_Message($title))
                 ->setFrom('cargo@lforce.pl')
-                ->setTo($carrier->getEmail())
+                ->setTo("rombi.pl@gmail.com")
                 ->setBody(
                     $this->renderView(
                         'emails/search.html.twig',
