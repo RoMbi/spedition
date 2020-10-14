@@ -77,7 +77,6 @@
     "js/plugins/video.min.js",
     "js/plugins/word_paste.min.js",
     "js/third_party/embedly.min.js",
-    "js/third_party/image_aviary.min.js",
     "js/third_party/spell_checker.min.js"
   ],
   "ignore": [

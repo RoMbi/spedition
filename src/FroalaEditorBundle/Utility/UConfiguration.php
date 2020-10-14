@@ -172,7 +172,7 @@
 			"imageUploadPath"   => null, //
 			"fileUploadFolder"  => "/upload", //
 			"fileUploadPath"    => null, //
-			"serialNumber"      => null, //
+			"serialNumber"      => "dfgdgfa", //
 			"videoUploadFolder" => "/upload", //
 			"videoUploadPath"   => null,
 			"publicDir"         => "/web",

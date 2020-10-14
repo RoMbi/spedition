@@ -3,11 +3,11 @@
 
 	{# CSS. #}
 	{% if includeFontAwesome %}
-		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" />
+{#		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" />#}
 	{% endif %}
 
 	{% if includeCodeMirror %}
-		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.css" />
+{#		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.css" />#}
 	{% endif %}
 
 	{% if includeCSS %}
@@ -29,12 +29,12 @@
 
 	{# JS. #}
 	{% if includeJQuery %}
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+{#		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>#}
 	{% endif %}
 
 	{% if includeCodeMirror %}
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.js"></script>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/mode/xml/xml.min.js"></script>
+{#		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.js"></script>#}
+{#		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/mode/xml/xml.min.js"></script>#}
 	{% endif %}
 
 	{% if includeJS %}
@@ -61,35 +61,33 @@
 		{# Go. #}
 		$( document ).ready( function () { $( "#{{ id }}" ).froalaEditor({
 			{# Add license. #}
-			{% if serialNumber is defined %}
-				key : "{{ serialNumber }}",
-			{% endif %}
+			key : "a-key",
 			{% for option, value in arrOption %}
 				{{ option }} : {% include "@KMSFroalaEditor/Form/value.html.twig" %}
 			{% endfor %} })
 			.on( "froalaEditor.image.error", function ( e, editor, error )
-			{
-				froalaDisplayError(  editor, error );
-			} )
-			.on( "froalaEditor.imageManager.error", function ( e, editor, error )
-			{
-				froalaDisplayError(  editor, error );
-			} )
-			.on( "froalaEditor.save.error", function ( e, editor, error )
-			{
-				froalaDisplayError(  editor, error );
-			} )
-			.on( "froalaEditor.file.error", function ( e, editor, error, responses )
-			{
-				froalaDisplayError(  editor, error );
-			} )
-			.on( "froalaEditor.video.error", function ( e, editor, error, responses )
-			{
-				froalaDisplayError(  editor, error );
-			} )
-			{% for event, func in events %}
-				.on("{{ event }}", {{ func }})
-            {% endfor %}
+					{
+						froalaDisplayError(  editor, error );
+					} )
+					.on( "froalaEditor.imageManager.error", function ( e, editor, error )
+					{
+						froalaDisplayError(  editor, error );
+					} )
+					.on( "froalaEditor.save.error", function ( e, editor, error )
+					{
+						froalaDisplayError(  editor, error );
+					} )
+					.on( "froalaEditor.file.error", function ( e, editor, error, responses )
+					{
+						froalaDisplayError(  editor, error );
+					} )
+					.on( "froalaEditor.video.error", function ( e, editor, error, responses )
+					{
+						froalaDisplayError(  editor, error );
+					} )
+					{% for event, func in events %}
+					.on("{{ event }}", {{ func }})
+			{% endfor %}
 			;
 		});
 	</script>
