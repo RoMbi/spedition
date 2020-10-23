@@ -1,4 +1,5 @@
 imports:
+    - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
 
@@ -36,6 +37,7 @@ framework:
 twig:
     form_themes:
         - 'bootstrap_4_layout.html.twig'
+        - '@KMSFroalaEditor/Form/froala_widget.html.twig'
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
 

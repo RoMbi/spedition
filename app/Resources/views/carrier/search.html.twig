@@ -1,4 +1,7 @@
 {% extends 'base.html.twig' %}
+{% block head %}
+    <script src="{{ asset('build/js/search.js') }}"></script>
+{% endblock %}
 
 {% block body %}
     <div class="table-wrapper">
@@ -69,7 +72,7 @@
 
     {% if results %}
         <hr>
-        <div class="table-wrapper">
+        <div class="table-wrapper" id="search-results">
             <div class="table-title">
                 <div class="row">
                     <h1>Wyniki</h1>
@@ -79,6 +82,7 @@
                 <table class="table table-filter">
                     <thead>
                     <tr>
+                        <th width="20px">@</th>
                         <th>Nazwa</th>
                         <th>Baza</th>
                         <th>Osoba / ID</th>
@@ -91,6 +95,7 @@
                     {% set emails = [] %}
                     {% for carrier in results %}
                         <tr>
+                            <td><input type="checkbox" name="emails" value="{{ carrier.email }}" checked /></td>
                             <td><a href="{{ path('carrier_show', { 'id': carrier.id }) }}">{{ carrier.name }}</a></td>
                             <td>{{ carrier.base }}</td>
                             <td>{{ carrier.person }} / {{ carrier.identifier }}</td>
@@ -121,6 +126,7 @@
                 </table>
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary btn-block btn-flat" data-toggle="modal"
+                        onclick="setEmails()"
                         data-target="#myModal">E-mail do wyników
                 </button>
                 <!-- Modal -->
@@ -132,7 +138,7 @@
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                             aria-hidden="true">&times;</span></button>
                             </div>
-                            <div class="modal-body">
+                            <div class="modal-body fr-view">
                                 {{ form_start(emailform) }}
                                 {{ form_end(emailform) }}
                             </div>
