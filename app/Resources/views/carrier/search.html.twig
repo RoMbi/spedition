@@ -65,6 +65,13 @@
                     {{ form_errors(form.paletteCapacityTo) }}
                 </div>
             </div>
+            <div class="row">
+                <div class="form-group col-sm-12">
+                    {{ form_label(form.tags) }}
+                    {{ form_widget(form.tags) }}
+                    {{ form_errors(form.tags) }}
+                </div>
+            </div>
             {{ form(form) }}
             {{ form_end(form) }}
         </div>

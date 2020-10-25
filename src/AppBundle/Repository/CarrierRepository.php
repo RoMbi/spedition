@@ -25,7 +25,8 @@ class CarrierRepository extends EntityRepository
             ->leftJoin('c.relations', 'r')
             ->leftJoin('r.destinations', 'd')
             ->leftJoin('r.fromLocations', 'fromLocations')
-            ->leftJoin('car.equipments', 'e');
+            ->leftJoin('car.equipments', 'e')
+            ->leftJoin('c.tags', 'ct');
 
         if ($data['base'] !== null) {
             $query
@@ -98,6 +99,16 @@ class CarrierRepository extends EntityRepository
                 ->andWhere('car.quantity >= :quantity')
                 ->setParameter('quantity', $data['quantity']);
         }
+
+        /**
+         * @var $tags ArrayCollection
+         */
+        if ($data['tags']) {
+            $query
+                ->andWhere('ct.id IN (:tags)')
+                ->setParameter('tags', $data['tags']);
+        }
+
         return $query->getQuery()->getResult();
     }
 }

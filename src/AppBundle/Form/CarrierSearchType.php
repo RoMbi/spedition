@@ -8,6 +8,7 @@ namespace AppBundle\Form;
 use AppBundle\Dictionary\Location as LocationDictionary;
 use AppBundle\Entity\CarBuild;
 use AppBundle\Entity\CarEquipment;
+use AppBundle\Entity\CarrierTag;
 use AppBundle\Entity\CarType as CarTypeEntity;
 use AppBundle\Entity\Location;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -119,6 +120,15 @@ class CarrierSearchType extends AbstractType
                         'placeholder' => 'Ilość',
                         'title' => 'ilość',
                     ],
+                    'required' => false
+                ]
+            )
+            ->add('tags', EntityType::class, [
+                    'class' => CarrierTag::class,
+                    'choice_label' => 'tag',
+                    'multiple' => false,
+                    'label' => 'Tag',
+                    'placeholder' => 'Tag',
                     'required' => false
                 ]
             )
