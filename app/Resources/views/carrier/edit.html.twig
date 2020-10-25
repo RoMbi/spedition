@@ -68,6 +68,12 @@
         {{ form_errors(edit_form.clauses) }}
     </div>
     <hr />
+    <div class="form-group">
+        {{ form_label(edit_form.tags) }}
+        {{ form_widget(edit_form.tags) }}
+        {{ form_errors(edit_form.tags) }}
+    </div>
+    <hr />
     <br/>
     <div class="form-group">
         {{ form_end(edit_form) }}

@@ -9,6 +9,7 @@ use AppBundle\Dictionary\CarrierStatus;
 use AppBundle\Entity\Car;
 use AppBundle\Entity\Carrier;
 use AppBundle\Entity\CarrierForm;
+use AppBundle\Entity\CarrierTag;
 use AppBundle\Form\CarrierType;
 use AppBundle\Service\CarrierCollectionChange;
 use DateTime;
@@ -16,7 +17,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Carrier controller.
@@ -48,7 +53,8 @@ class CarrierController extends Controller
      * @Route("/new", name="carrier_new")
      * @Method({"GET", "POST"})
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *
+     * @return RedirectResponse|Response
      */
     public function newAction(Request $request)
     {
@@ -124,7 +130,7 @@ class CarrierController extends Controller
      *
      * @param Carrier $carrier
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showAction(Carrier $carrier, $id)
     {
@@ -164,7 +170,7 @@ class CarrierController extends Controller
      * @param Carrier $carrier
      * @param CarrierCollectionChange $carrierCollectionChange
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function editAction(Request $request, Carrier $carrier, CarrierCollectionChange $carrierCollectionChange)
     {
@@ -181,9 +187,11 @@ class CarrierController extends Controller
             $originalRelations->add($relation);
         }
 
+
         $deleteForm = $this->createDeleteForm($carrier);
         $editForm = $this->createForm(CarrierType::class, $carrier);
         $editForm->handleRequest($request);
+//        $this->saveNewTags($request, $carrier);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $carrierCollectionChange->handleCars($carrier, $originalCars);
@@ -206,6 +214,10 @@ class CarrierController extends Controller
      *
      * @Route("/{id}", name="carrier_delete")
      * @Method("DELETE")
+     * @param Request $request
+     * @param Carrier $carrier
+     *
+     * @return RedirectResponse
      */
     public function deleteAction(Request $request, Carrier $carrier)
     {
@@ -226,7 +238,7 @@ class CarrierController extends Controller
      *
      * @param Carrier $carrier The carrier entity
      *
-     * @return \Symfony\Component\Form\FormInterface The form
+     * @return FormInterface The form
      */
     private function createDeleteForm(Carrier $carrier)
     {
@@ -236,5 +248,52 @@ class CarrierController extends Controller
             ->setAttribute('single', true)
             ->getForm()
         ;
+    }
+
+    private function saveNewTags(Request $request, Carrier $carrier)
+    {
+        $tags = $request->request->get('appbundle_carrier')['tags'];
+        if(!is_array($tags)) {
+            return;
+        }
+
+        foreach ($tags as $tag) {
+            if (!is_numeric($tag)) {
+                $newTag = new CarrierTag();
+                $newTag->setTag($tag);
+                $this->getDoctrine()->getManager()->persist($newTag);
+                $carrier->addTag($newTag);
+            }
+        }
+        $this->getDoctrine()->getManager()->flush();
+//        $request->request->get('appbundle_carrier')['tags'] = null;
+    }
+
+    /**
+     * @Route("/addTag")
+     * @Method({"GET", "POST", "DELETE"})
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function addTagAction(Request $request)
+    {
+        $tag = $request->get('tag');
+        $carrierTagRepository = $this->getDoctrine()->getManager()->getRepository(CarrierTag::class);
+        $existedTag = $carrierTagRepository->findOneBy(['tag' => $tag]);
+        if ($existedTag) {
+            return new JsonResponse(
+                ['tagId' => $existedTag->getId()]
+            );
+        }
+
+        $newTag = new CarrierTag();
+        $newTag->setTag($tag);
+        $this->getDoctrine()->getManager()->persist($newTag);
+        $this->getDoctrine()->getManager()->flush();
+
+        return new JsonResponse(
+            ['tagId' => $newTag->getId()]
+        );
     }
 }

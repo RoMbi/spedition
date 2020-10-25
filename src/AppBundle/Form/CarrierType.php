@@ -7,6 +7,7 @@ namespace AppBundle\Form;
 
 use AppBundle\Dictionary\CarrierStatus;
 use AppBundle\Entity\Carrier;
+use AppBundle\Entity\CarrierTag;
 use AppBundle\Entity\Clause;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -93,6 +94,17 @@ class CarrierType extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
                 'label' => 'Klauzule',
+            ])
+            ->add('tags', EntityType::class, [
+                'class' => CarrierTag::class,
+                'choice_label' => 'tag',
+                'multiple' => true,
+                'attr' => [
+                    'class' => 'tags',
+                    'data-placeholder' => 'Tagi',
+                ],
+                'required' => false,
+                'label' => 'Tagi',
             ])
             ->add('submit', SubmitType::class, [
                     'attr' => array('class' => 'form-row btn btn-success btn-block btn-flat'),

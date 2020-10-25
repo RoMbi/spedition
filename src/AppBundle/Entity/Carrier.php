@@ -81,7 +81,6 @@ class Carrier
     private $phone;
 
     /**
-     * Many Cars have Many eqt
      * @ORM\ManyToMany(targetEntity="Clause")
      * @ORM\JoinTable(name="ca_carriers_clauses",
      *      joinColumns={@ORM\JoinColumn(name="carrier_id", referencedColumnName="id")},
@@ -108,10 +107,21 @@ class Carrier
      */
     private $createdAt;
 
+    /**
+     * @var CarrierTag[]
+     * @ORM\ManyToMany(targetEntity="CarrierTag")
+     * @ORM\JoinTable(name="ca_carriers_tags",
+     *      joinColumns={@ORM\JoinColumn(name="carrier_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")}
+     *      )
+     */
+    private $tags;
+
     public function __construct()
     {
         $this->cars = new ArrayCollection();
         $this->relations = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     /**
@@ -401,6 +411,22 @@ class Carrier
     public function getCreatedAt()
     {
         return $this->createdAt;
+    }
+
+    /**
+     * @return CarrierTag[]
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @param CarrierTag $tag
+     */
+    public function addTag($tag)
+    {
+        $this->tags->add($tag);
     }
 }
 

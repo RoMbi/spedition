@@ -122,6 +122,14 @@
                         {% endif %}
                     </td>
                 </tr>
+                {% if carrier.tags != null %}
+                    <tr>
+                        <th>Tagi</th>
+                        <td>
+                            {{ carrier.tags|join(', ') }}
+                        </td>
+                    </tr>
+                {% endif %}
                 </tbody>
             </table>
         </div>
