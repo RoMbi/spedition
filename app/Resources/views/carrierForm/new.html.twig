@@ -18,6 +18,11 @@
                 {{ form_widget(form.carrierIdentifier) }}
                 {{ form_errors(form.carrierIdentifier) }}
             </div>
+            <div class="relations form-group">
+                <legend class="col-form-legend">Relacje</legend>
+                <div class="form-row relation-add"
+                     data-prototype="{{ form_widget(form.carrier.relations.vars.prototype)|e('html_attr') }}"></div>
+            </div>
         </div>
         {{ form_end(form) }}
     </div>

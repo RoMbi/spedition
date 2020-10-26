@@ -38,14 +38,14 @@ class CarrierCollectionChange
     public function handleRelations(Carrier $carrier, ArrayCollection $originalRelations)
     {
         /**
-         * handle new Cars
+         * handle new relations
          */
         foreach ($carrier->getRelations() as $relation) {
             $relation->setCarrier($carrier);
         }
 
         /**
-         * removing deleted cars
+         * removing deleted relations
          * @var Relation $originalRelation
          */
         foreach ($originalRelations as $originalRelation) {
@@ -53,11 +53,11 @@ class CarrierCollectionChange
                 $carrier->removeRelation($originalRelation);
                 $this->em->persist($carrier);
                 $this->em->remove($originalRelation);
-                /** nulling carrier from Car instead of deleting entity */
+                /** nulling carrier from relation instead of deleting entity */
 //                    $originalRelation->setCarrier(null);
             }
         }
-        // Create an ArrayCollection of the current Car objects in the database
+        // Create an ArrayCollection of the current relation objects in the database
         foreach ($carrier->getRelations() as $relation) {
             $originalRelations->add($relation);
         }

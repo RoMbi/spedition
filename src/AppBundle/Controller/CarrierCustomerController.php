@@ -18,6 +18,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Exception\LogicException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -47,8 +48,8 @@ class CarrierCustomerController extends Controller
      * @param CarrierForm $carrierForm
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @throws \Symfony\Component\Form\Exception\LogicException
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @throws LogicException
      */
     public function newAction(CarrierForm $carrierForm, Request $request, $code)
     {
@@ -102,8 +103,8 @@ class CarrierCustomerController extends Controller
      * @param Request $request
      * @param CarrierCollectionChange $carrierCollectionChange
      *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Symfony\Component\Form\Exception\LogicException
+     * @return Response
+     * @throws LogicException
      */
     public function secondStep(CarrierForm $carrierForm, Carrier $carrier, Request $request, CarrierCollectionChange $carrierCollectionChange)
     {
@@ -145,17 +146,17 @@ class CarrierCustomerController extends Controller
      * @param Request $request
      * @param CarrierCollectionChange $carrierCollectionChange
      *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Symfony\Component\Form\Exception\LogicException
+     * @return Response
+     * @throws LogicException
      */
     public function lastStep(CarrierForm $carrierForm, Carrier $carrier, Request $request, CarrierCollectionChange $carrierCollectionChange, \Swift_Mailer $mailer)
     {
         $this->validateData($carrierForm, $carrier);
         $originalRelations = new ArrayCollection();
 
-        // Create an ArrayCollection of the current Car objects in the database
-        foreach ($carrier->getRelations() as $car) {
-            $originalRelations->add($car);
+        // Create an ArrayCollection of the current relation objects in the database
+        foreach ($carrier->getRelations() as $relation) {
+            $originalRelations->add($relation);
         }
         $form = $this->createForm(CarrierCustomerLastType::class, $carrier);
         $form->handleRequest($request);
@@ -198,7 +199,7 @@ class CarrierCustomerController extends Controller
      * @param CarrierForm $carrierForm
      * @param Carrier $carrier
      *
-     * @throws \Symfony\Component\Form\Exception\LogicException
+     * @throws LogicException
      */
     private function validateData(CarrierForm $carrierForm, Carrier $carrier)
     {

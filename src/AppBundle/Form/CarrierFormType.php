@@ -14,6 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class CarrierFormType
+ *
  * @package AppBundle\Form
  */
 class CarrierFormType extends AbstractType
@@ -37,11 +38,13 @@ class CarrierFormType extends AbstractType
                     'placeholder' => 'ID',
                 ],
             ])
+            ->add('carrier', CarrierRelationType::class, [
+                'label' => false
+            ])
             ->add('submit', SubmitType::class, [
-                    'attr' => array('class' => 'btn btn-primary btn-block btn-flat'),
-                    'label' => 'Zapisz i generuj link'
-                ]
-            );
+                'attr' => array('class' => 'btn btn-primary btn-block btn-flat'),
+                'label' => 'Zapisz i generuj link'
+            ]);
     }
 
     /**

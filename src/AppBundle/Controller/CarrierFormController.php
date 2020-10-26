@@ -8,7 +8,11 @@ namespace AppBundle\Controller;
 use AppBundle\Dictionary\CarrierStatus;
 use AppBundle\Entity\Carrier;
 use AppBundle\Entity\CarrierForm;
+use AppBundle\Entity\Relation;
 use AppBundle\Form\CarrierFormType;
+use AppBundle\Form\CarrierRelationType;
+use AppBundle\Form\CarrierType;
+use AppBundle\Form\RelationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -38,10 +42,6 @@ class CarrierFormController extends Controller
             $carrierForm->generateCode();
             $this->validateCode($carrierForm);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($carrierForm);
-            $em->flush();
-
             $carrier = new Carrier();
             $carrier
                 ->setIdentifier($carrierForm->getCarrierIdentifier())
@@ -49,10 +49,18 @@ class CarrierFormController extends Controller
                 ->setStatus(CarrierStatus::_NEW)
                 ->setCreatorName($creatorName);
 
-            $carrierForm->setCarrier($carrier);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($carrier);
+            $em->flush();
+
+            foreach ($carrierForm->getCarrier()->getRelations() as $relation) {
+                $relation->setCarrier($carrier);
+                $carrier->addRelation($relation);
+            }
+
+            $carrierForm->setCarrier($carrier);
+            $em->persist($carrierForm);
             $em->flush();
 
             return $this->redirectToRoute('carrier_form_show', array('id' => $carrierForm->getId()));

@@ -76,11 +76,17 @@ class RelationType extends AbstractType
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        foreach (array_reverse(LocationDictionary::MAIN) as $country) {
-            $newChoice = new ChoiceView([], '', $country, ['disabled' => 'disabled']);
-            array_unshift($view->children['fromLocations']->vars['choices'], $newChoice);
-            array_unshift($view->children['destinations']->vars['choices'], $newChoice);
+        $generalLocations = [];
+        /** @var ChoiceView $choice */
+        foreach ($view->children['fromLocations']->vars['choices'] as $key => $choice) {
+            /** there are about 1000+ "not general" locations, but some are just country code - skipping them */
+            if((int)$choice->value > 1050 && in_array($choice->label, LocationDictionary::MAIN, true)) {
+                $generalLocations[] = $choice;
+                unset($view->children['fromLocations']->vars['choices'][$key], $view->children['destinations']->vars['choices'][$key]);
+            }
         }
+        $view->children['fromLocations']->vars['choices'] = array_merge($generalLocations, $view->children['fromLocations']->vars['choices']);
+        $view->children['destinations']->vars['choices'] = array_merge($generalLocations, $view->children['destinations']->vars['choices']);
     }
 
     /**

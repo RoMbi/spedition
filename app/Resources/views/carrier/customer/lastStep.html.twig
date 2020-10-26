@@ -23,12 +23,12 @@
                 Dokąd - Zasada działania wyboru jak w polu "Skąd". Dodatkowo można dodać więcej destynacji (kodów), jeśli interesują Państwa ładunki zarówno do jednego jak i kilku miejsc. Przykład: z kodu PL4 do IT1, IT2, IT3 itd. <br />
             </div>
 
+            <div class="form-group relations">
             {% for relation in form.relations %}
-                <div class="new-relation relations-collection">
+                <div class="new-relation relations-collection form-row">
                     {{ form_widget(relation) }}
                 </div>
             {% endfor %}
-            <div class="form-group relations">
                 <div class="form-row relation-add"
                      data-prototype="{{ form_widget(form.relations.vars.prototype)|e('html_attr') }}"></div>
             </div>
