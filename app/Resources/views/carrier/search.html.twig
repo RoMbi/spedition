@@ -132,20 +132,20 @@
                     </tbody>
                 </table>
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary btn-block btn-flat" data-toggle="modal"
+                <button id="sendMailButton" type="button" class="btn btn-primary btn-block btn-flat" data-toggle="modal"
                         onclick="setEmails()"
                         data-target="#myModal">E-mail do wyników
                 </button>
                 <!-- Modal -->
                 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                    <div class="modal-dialog" role="document">
+                    <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h4 class="modal-title" id="myModalLabel">E-mail do wyników</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                             aria-hidden="true">&times;</span></button>
                             </div>
-                            <div class="modal-body fr-view">
+                            <div class="modal-body fr-view froala-clear-css">
                                 {{ form_start(emailform) }}
                                 {{ form_end(emailform) }}
                             </div>

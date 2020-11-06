@@ -109,5 +109,6 @@ kms_froala_editor:
     includeCodeMirror: false
     # Disable Font Awesome inclusion.
     includeFontAwesome: false
-    pluginsEnabled: [ "font_size", "font_family" ]
+    pluginsEnabled: [ "font_size", "font_family", "colors", "image" ]
     placeholderText: null
+    imageUploadFolder: "/temp/img"

@@ -75,3 +75,8 @@ div.dataTables_wrapper div.dataTables_info {
 .remove-tag {
     max-width: 8%;
 }
+
+.froala-clear-css table td
+{
+    border: 0 !important;
+}
