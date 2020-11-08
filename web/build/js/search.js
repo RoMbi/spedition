@@ -1,7 +1,18 @@
-$(document).ready(function () {
+let $carTypeMultiselectConfig = {
+    nonSelectedText: 'Dowolny rodzaj',
+    nSelectedText: 'rodzaj',
+    allSelectedText: 'Wszystkie rodzaje',
+    buttonWidth: '100%',
+    wrapElement: '<span class="multiselect-native-select col-sm-2" />',
+    buttonClass: 'form-control text-nowrap',
+};
+
+jQuery(document).ready(function () {
     $('#sendMailButton').one('click', function () {
         $('div.fr-element.fr-view').prepend(mailTemplate);
     });
+
+    $('#appbundle_carriersearch_type').multiselect($carTypeMultiselectConfig);
 });
 
 

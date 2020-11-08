@@ -62,7 +62,7 @@ class CarrierRepository extends EntityRepository
 
         if ($data['type']) {
             $query
-                ->andWhere('car.type = :type')
+                ->andWhere('car.type IN (:type)')
                 ->setParameter('type', $data['type']);
         }
 

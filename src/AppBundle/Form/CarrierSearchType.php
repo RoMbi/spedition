@@ -73,6 +73,7 @@ class CarrierSearchType extends AbstractType
             ])
             ->add('type', EntityType::class, [
                     'class' => CarTypeEntity::class,
+                    'multiple' => true,
                     'choice_label' => 'name',
                     'label' => 'Typ pojazdu',
                     'placeholder' => 'Typ pojazdu',
