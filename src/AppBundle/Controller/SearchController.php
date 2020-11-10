@@ -72,12 +72,9 @@ class SearchController extends Controller
             foreach ($emails as $email) {
                 $message = (new Swift_Message($title))
                 ->setFrom('cargo@lforce.pl')
-                ->setTo($email->getEmail())
+                ->setTo($email)
                 ->setBody(
-                    $this->renderView(
-                        'emails/search.html.twig',
-                        ['messagetext' => $messagetext]
-                    ),
+                    $messagetext,
                     'text/html'
                 );
                 $mailer->send($message);
