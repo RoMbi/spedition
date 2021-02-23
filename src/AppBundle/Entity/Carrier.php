@@ -99,7 +99,7 @@ class Carrier
      * @var string
      * @ORM\Column(name="creatorName", type="string", length=255, nullable=true)
      */
-    private $creatorName; // createdBy nieuku
+    private $createdBy;
 
     /**
      * @var DateTime
@@ -374,13 +374,13 @@ class Carrier
     /**
      * Set creatorName
      *
-     * @param string $creatorName
+     * @param string $createdBy
      *
      * @return Carrier
      */
-    public function setCreatorName($creatorName)
+    public function setCreatedBy($createdBy)
     {
-        $this->creatorName = $creatorName;
+        $this->createdBy = $createdBy;
         return $this;
     }
 
@@ -389,9 +389,9 @@ class Carrier
      *
      * @return string
      */
-    public function getCreatorName()
+    public function getCreatedBy()
     {
-        return $this->creatorName;
+        return $this->createdBy;
     }
 
     /**

@@ -73,7 +73,7 @@ class CarrierController extends Controller
 
             $carrier
                 ->setStatus(CarrierStatus::_CLOSED)
-                ->setCreatorName($createdBy)
+                ->setCreatedBy($createdBy)
                 ->setCreatedAt(new DateTime('now'));
 
             $em = $this->getDoctrine()->getManager();

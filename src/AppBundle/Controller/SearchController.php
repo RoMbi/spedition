@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * Search controller.
@@ -29,11 +30,13 @@ class SearchController extends Controller
      * @Route("/", name="search_index")
      * @Method({"GET", "POST"})
      * @param Request $request
+     * @param Swift_Mailer $mailer
+     *
      * @return Response
      */
     public function indexAction(Request $request, Swift_Mailer $mailer)
     {
-        $results = array();
+        $results = [];
         $anyResult = false;
         $form = $this->createForm(CarrierSearchType::class);
         $form->handleRequest($request);
@@ -65,20 +68,7 @@ class SearchController extends Controller
         $emailForm->handleRequest($request);
 
         if($emailForm->isSubmitted() && $emailForm->isValid()){
-            $title = $emailForm->get('title')->getData();
-            $messagetext = $emailForm->get('message')->getData();
-            $emails = $this->get('session')->get('emails');
-
-            foreach ($emails as $email) {
-                $message = (new Swift_Message($title))
-                ->setFrom('cargo@lforce.pl')
-                ->setTo($email)
-                ->setBody(
-                    $messagetext,
-                    'text/html'
-                );
-                $mailer->send($message);
-            }
+            $this->sendMails($emailForm, $mailer);
             $this->get('session')->set('emails', []);
             $this->addFlash('success', 'Wiadomości email zostały wysłane pomyślnie.');
         }
@@ -107,5 +97,27 @@ class SearchController extends Controller
             'Emails saved.',
             Response::HTTP_OK
         );
+    }
+
+    /**
+     * @param FormInterface $emailForm
+     * @param Swift_Mailer $mailer
+     */
+    private function sendMails(FormInterface $emailForm, Swift_Mailer $mailer)
+    {
+        $title = $emailForm->get('title')->getData();
+        $messagetext = $emailForm->get('message')->getData();
+        $emails = $this->get('session')->get('emails');
+
+        foreach ($emails as $email) {
+            $message = (new Swift_Message($title))
+                ->setFrom('cargo@lforce.pl')
+                ->setTo($email)
+                ->setBody(
+                    $messagetext,
+                    'text/html'
+                );
+            $mailer->send($message);
+        }
     }
 }

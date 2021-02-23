@@ -47,7 +47,7 @@ class CarrierFormController extends Controller
                 ->setIdentifier($carrierForm->getCarrierIdentifier())
                 ->setName($carrierForm->getCarrierName())
                 ->setStatus(CarrierStatus::_NEW)
-                ->setCreatorName($creatorName);
+                ->setCreatedBy($creatorName);
 
 
             $em = $this->getDoctrine()->getManager();
